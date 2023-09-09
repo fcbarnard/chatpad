@@ -1,14 +1,18 @@
-import { ReactNode } from "react";
+import { ReactNode, useRef, useEffect } from "react";
 
 export function ScrollIntoView({ children }: { children: ReactNode }) {
-  return (
-    <div
-      ref={(node) => {
-        if (!node) return;
-        node.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      {children}
-    </div>
-  );
+    // Scroll into view as soon as we appear
+    const myRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (myRef.current) {
+            myRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, []);
+
+    return (
+        <div ref={myRef}>
+            {children}
+        </div>
+    );
 }
